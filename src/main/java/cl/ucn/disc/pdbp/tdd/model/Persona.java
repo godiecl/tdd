@@ -85,27 +85,27 @@ public final class Persona {
      * @return the nombre.
      */
     public String getNombre() {
-        return this.nombre;
+        return nombre;
     }
 
     /**
      * @return the apellido.
      */
     public String getApellido() {
-        return this.apellido;
+        return apellido;
     }
 
     /**
      * @return the rut.
      */
     public String getRut() {
-        return this.rut;
+        return rut;
     }
 
     /**
      * @return the nombre plus apellido.
      */
     public String getNombreApellido() {
-        return this.nombre + " " + this.apellido;
+        return nombre + " " + apellido;
     }
 }

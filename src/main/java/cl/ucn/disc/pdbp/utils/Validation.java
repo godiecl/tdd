@@ -69,7 +69,7 @@ public final class Validation {
      *
      * @return true is rut is valid.
      */
-    @SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "BooleanMethodNameMustStartWithQuestion", "OverlyComplexArithmeticExpression", "AssignmentToMethodParameter", "ForLoopWithMissingComponent"})
+    @SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "BooleanMethodNameMustStartWithQuestion", "OverlyComplexArithmeticExpression", "AssignmentToMethodParameter", "ForLoopWithMissingComponent", "StandardVariableNames"})
     private static boolean validarRut(int rut, char dv) {
         int m = 0, s = 1;
         for (; rut != 0; rut /= 10) {

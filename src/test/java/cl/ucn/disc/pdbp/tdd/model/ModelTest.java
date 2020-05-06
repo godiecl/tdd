@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Diego Urrutia-Astorga.
  */
+@SuppressWarnings({"MessageMissingOnJUnitAssertion", "ClassIndependentOfModule", "ClassOnlyUsedInOneModule", "ClassNamePrefixedWithPackageName"})
 public final class ModelTest {
 
     /**
@@ -43,6 +44,7 @@ public final class ModelTest {
      * - El rut no puede ser null.
      * - El rut debe ser valido.
      */
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
     @Test
     public void testPersona() {
 
@@ -58,11 +60,11 @@ public final class ModelTest {
 
         // Test constructor and getters
         Persona persona = new Persona(nombre, apellido, rutOk);
-        Assertions.assertEquals(persona.getNombre(), nombre);
-        Assertions.assertEquals(persona.getApellido(), apellido);
+        Assertions.assertEquals(nombre, persona.getNombre());
+        Assertions.assertEquals(apellido, persona.getApellido());
         Assertions.assertEquals(persona.getNombreApellido(), nombreApellido);
-        Assertions.assertEquals(persona.getRut(), rutOk);
-        Assertions.assertNotEquals(persona.getRut(), rutError);
+        Assertions.assertEquals(rutOk, persona.getRut());
+        Assertions.assertNotEquals(rutError, persona.getRut());
 
         // Testing nullity
         log.debug(".. nullity ..");
