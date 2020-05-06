@@ -1,0 +1,42 @@
+# Idea files
+*.iml
+
+# Gradle stuff
+.gradle
+
+# Local
+/local.properties
+
+# Idea
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/misc.xml
+# /.idea/codeStyles/
+/.idea/runConfigurations.xml
+/.idea/vcs.xml
+/.idea/gradle.xml
+/.idea/.name
+# FIXED: inspections
+# /.idea/inspectionProfiles/
+# FIXED: (c)
+# /.idea/copyright/
+/.idea/kotlinCodeInsightSettings.xml
+/.idea/.gitignore
+/.idea/render.experimental.xml
+/.idea/$CACHE_FILE$
+/.idea/checkstyle-idea.xml
+/.idea/checkstyleidea.tmp/
+/.idea/dictionaries
+/.idea/jarRepositories.xml
+/.idea/compiler.xml
+
+# Trashy-trashy
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
