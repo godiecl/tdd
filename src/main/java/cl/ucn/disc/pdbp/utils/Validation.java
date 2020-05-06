@@ -27,10 +27,30 @@ import java.util.regex.Pattern;
 public final class Validation {
 
     /**
+     * The regular expression.
+     * - https://howtodoinjava.com/regex/java-regex-validate-email-address/
+     */
+    @SuppressWarnings("HardcodedFileSeparator")
+    private static final String REGEX = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
+    /**
+     * The regular expression compiled.
+     */
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
+
+    /**
      * Not for construction.
      */
     private Validation() {
         // Empty
+    }
+
+    /**
+     * @param email to validate.
+     * @return true is email is valid.
+     */
+    public static boolean isEmailValid(String email) {
+        return PATTERN.matcher(email).find();
     }
 
     /**

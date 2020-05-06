@@ -92,6 +92,26 @@ public final class ModelTest {
     }
 
     /**
+     * Test the email.
+     */
+    @Test
+    public void testEmail() {
+
+        // TODO: Agregar mas casos de prueba.
+
+        Assertions.assertTrue(Validation.isEmailValid("durrutia@ucn.cl"));
+        Assertions.assertTrue(Validation.isEmailValid("durru_tia@ucn.cl"));
+        Assertions.assertTrue(Validation.isEmailValid("123@ucn.cl"));
+
+        Assertions.assertFalse(Validation.isEmailValid("durrutia@u cn.cl"));
+        Assertions.assertFalse(Validation.isEmailValid("@ucn.cl"));
+        Assertions.assertFalse(Validation.isEmailValid("durrutia"));
+        Assertions.assertFalse(Validation.isEmailValid("durrutia@"));
+        Assertions.assertFalse(Validation.isEmailValid("durr@utia@ucn.cl"));
+
+    }
+
+    /**
      * Test the digito verificador.
      */
     @Test
