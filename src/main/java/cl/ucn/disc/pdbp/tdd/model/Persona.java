@@ -1,45 +1,71 @@
 /*
- * Copyright 2019-2020 Diego Urrutia Astorga <durrutia@ucn.cl>.
+ * MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2020 Diego Urrutia-Astorga <durrutia@ucn.cl>.
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package cl.ucn.disc.pdbp.tdd.model;
 
 import cl.ucn.disc.pdbp.utils.Validation;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * The Persona class.
  *
  * @author Diego Urrutia-Astorga.
  */
+@DatabaseTable(tableName = "personas")
 public final class Persona {
+
+    /**
+     * The id.
+     */
+    @DatabaseField(generatedId = true)
+    private Long id;
 
     /**
      * The Nombre.
      */
-    private final String nombre;
+    @DatabaseField(canBeNull = false)
+    private String nombre;
 
     /**
      * The Apellido.
      */
-    private final String apellido;
+    @DatabaseField(canBeNull = false)
+    private String apellido;
 
     /**
      * The Rut.
      */
-    private final String rut;
+    @DatabaseField(canBeNull = false, index = true)
+    private String rut;
 
+    /**
+     * Empty contructor.
+     */
+    Persona() {
+        // nothing here.
+    }
 
     /**
      * Constructor de una persona.
@@ -82,6 +108,13 @@ public final class Persona {
     }
 
     /**
+     * @return the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
      * @return the nombre.
      */
     public String getNombre() {
@@ -108,4 +141,5 @@ public final class Persona {
     public String getNombreApellido() {
         return nombre + " " + apellido;
     }
+
 }
