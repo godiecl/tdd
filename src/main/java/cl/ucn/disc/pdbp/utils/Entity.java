@@ -37,12 +37,12 @@ public final class Entity {
     /**
      * Transforma en String un objeto t mostrando sus atributos.
      *
-     * @param t   to convert.
-     * @param <T> type of t.
+     * @param obj   to convert.
      * @return the object in string format.
      */
-    public static <T> String toString(final T t) {
-        return ReflectionToStringBuilder.toString(t, new MultilineRecursiveToStringStyle());
+    public static String toString(Object obj) {
+        return ReflectionToStringBuilder.toString(obj, new MultilineRecursiveToStringStyle());
     }
+
 
 }
