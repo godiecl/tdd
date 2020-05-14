@@ -61,7 +61,7 @@ public final class StorageTest {
     public void testRepositoryPersona() {
 
         // The database to use (in RAM memory)
-        String databaseUrl = "jdbc:h2:mem:fivet_db";
+        String databaseUrl = "jdbc:h2:mem:";
 
         try (ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl)) {
 
@@ -134,7 +134,7 @@ public final class StorageTest {
     public void testRepositoryFicha() {
 
         // The database to use (in RAM memory)
-        String databaseUrl = "jdbc:h2:mem:fivet_db";
+        String databaseUrl = "jdbc:h2:mem:";
 
         // Connection source: autoclose with the try/catch
         try (ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl)) {
@@ -231,7 +231,7 @@ public final class StorageTest {
     public void testDatabase() throws SQLException {
 
         // The database to use (in RAM memory)
-        String databaseUrl = "jdbc:h2:mem:fivet_db";
+        String databaseUrl = "jdbc:h2:mem:";
 
         // Connection source: autoclose with the try/catch
         try (ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl)) {
