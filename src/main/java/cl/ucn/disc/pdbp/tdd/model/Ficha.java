@@ -24,6 +24,10 @@
 
 package cl.ucn.disc.pdbp.tdd.model;
 
+import cl.ucn.disc.pdbp.tdd.dao.ZonedDateTimeType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.time.ZonedDateTime;
 
 /**
@@ -31,47 +35,69 @@ import java.time.ZonedDateTime;
  *
  * @author Diego Urrutia-Astorga.
  */
+@DatabaseTable(tableName = "ficha")
 public final class Ficha {
+
+    /**
+     * The id: Primary Key (autoincrement).
+     */
+    @DatabaseField(generatedId = true)
+    private Long id;
 
     /**
      * Numero de ficha
      */
-    private final Integer numero;
+    @DatabaseField
+    private Integer numero;
 
     /**
      * Nombre del paciente
      */
-    private final String nombrePaciente;
+    @DatabaseField(canBeNull = false)
+    private String nombrePaciente;
 
     /**
      * Especie: ej. canino
      */
-    private final String especie;
+    @DatabaseField(canBeNull = false)
+    private String especie;
 
     /**
      * Fecha de nacimiento
      */
-    private final ZonedDateTime fechaNacimiento;
+    @DatabaseField(persisterClass = ZonedDateTimeType.class)
+    private ZonedDateTime fechaNacimiento;
 
     /**
      * Raza
      */
-    private final String raza;
+    @DatabaseField
+    private String raza;
 
     /**
      * Sexo
      */
-    private final Sexo sexo;
+    @DatabaseField(canBeNull = false)
+    private Sexo sexo;
 
     /**
      * Color: rojo cobrizo
      */
-    private final String color;
+    @DatabaseField
+    private String color;
 
     /**
      * Tipo: interno/externo
      */
-    private final Tipo tipo;
+    @DatabaseField(canBeNull = false)
+    private Tipo tipo;
+
+    /**
+     * Empty constructor.
+     */
+    Ficha() {
+        // nothing here.
+    }
 
     /**
      * The Constructor.
@@ -85,7 +111,15 @@ public final class Ficha {
      * @param color           de la mascota.
      * @param tipo            de la mascota.
      */
-    public Ficha(Integer numero, String nombrePaciente, String especie, ZonedDateTime fechaNacimiento, String raza, Sexo sexo, String color, Tipo tipo) {
+    public Ficha(Integer numero,
+                 String nombrePaciente,
+                 String especie,
+                 ZonedDateTime fechaNacimiento,
+                 String raza,
+                 Sexo sexo,
+                 String color,
+                 Tipo tipo) {
+        // TODO: add validations !!
         this.numero = numero;
         this.nombrePaciente = nombrePaciente;
         this.especie = especie;
@@ -94,6 +128,13 @@ public final class Ficha {
         this.sexo = sexo;
         this.color = color;
         this.tipo = tipo;
+    }
+
+    /**
+     * @return the id.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**

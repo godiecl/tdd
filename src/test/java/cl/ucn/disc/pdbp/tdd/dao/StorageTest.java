@@ -24,7 +24,11 @@
 
 package cl.ucn.disc.pdbp.tdd.dao;
 
+import cl.ucn.disc.pdbp.tdd.model.Ficha;
 import cl.ucn.disc.pdbp.tdd.model.Persona;
+import cl.ucn.disc.pdbp.tdd.model.Sexo;
+import cl.ucn.disc.pdbp.tdd.model.Tipo;
+import cl.ucn.disc.pdbp.utils.Entity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -37,6 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -44,6 +49,7 @@ import java.util.List;
  *
  * @author Diego Urrutia-Astorga.
  */
+@SuppressWarnings("LawOfDemeter")
 public final class StorageTest {
 
     /**
@@ -121,6 +127,62 @@ public final class StorageTest {
 
     }
 
+    /**
+     * Testing the Repository of Ficha.
+     */
+    @Test
+    public void testRepositoryFicha() {
+
+        // The database to use (in RAM memory)
+        String databaseUrl = "jdbc:h2:mem:fivet_db";
+
+        try (ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl)) {
+
+            // Create the table in the backend
+            // TODO: Include this call in the repository?
+            TableUtils.createTableIfNotExists(connectionSource, Ficha.class);
+
+            // The repository.
+            Repository<Ficha, Long> theRepo = new RepositoryOrmLite<>(connectionSource, Ficha.class);
+
+            // Get the list of all. Size == 0.
+            {
+                List<Ficha> fichas = theRepo.findAll();
+                // The size must be zero.
+                Assertions.assertEquals(0, fichas.size(), "Size != 0 !!");
+            }
+
+            // The Ficha to insert.
+            {
+                Ficha ficha = new Ficha(
+                        123,
+                        "Firulais",
+                        "Canino",
+                        ZonedDateTime.now(),
+                        "Rottweiler",
+                        Sexo.MACHO,
+                        "Negro con amarillo",
+                        Tipo.INTERNO
+                );
+
+                if (!theRepo.create(ficha)) {
+                    Assertions.fail("Can't insert!");
+                }
+                Assertions.assertNotNull(ficha.getId(), "Id was null");
+            }
+
+            // Get from repository
+            {
+                Ficha ficha = theRepo.findById(1L);
+                Assertions.assertNotNull(ficha, "404 Not found!");
+                log.debug("Ficha: {}.", Entity.toString(ficha));
+            }
+
+        } catch (SQLException | IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+    }
 
     /**
      * Testing de ORMLite + H2 (database).
