@@ -73,9 +73,10 @@ public final class ModelTest {
         Assertions.assertEquals(apellido, persona.getApellido());
         Assertions.assertEquals(persona.getNombreApellido(), nombreApellido);
         Assertions.assertEquals(rutOk, persona.getRut());
-        Assertions.assertEquals(null, persona.getDireccion());
-        Assertions.assertEquals(null, persona.getTelefonoFijo());
-        Assertions.assertEquals(null, persona.getTelefonoMovil());
+        Assertions.assertNull(persona.getDireccion());
+        Assertions.assertNull(persona.getTelefonoFijo());
+        Assertions.assertNull(persona.getTelefonoMovil());
+        Assertions.assertNull(persona.getTelefonoMovil());
         Assertions.assertEquals(email, persona.getEmail());
         Assertions.assertNotEquals(rutError, persona.getRut());
 
@@ -113,8 +114,6 @@ public final class ModelTest {
      */
     @Test
     public void testEmail() {
-
-        // TODO: Agregar mas casos de prueba.
 
         Assertions.assertTrue(Validation.isEmailValid("durrutia@ucn.cl"));
         Assertions.assertTrue(Validation.isEmailValid("durru_tia@ucn.cl"));
