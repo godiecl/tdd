@@ -52,6 +52,77 @@ public final class StorageTest {
     private static final Logger log = LoggerFactory.getLogger(StorageTest.class);
 
     /**
+     * Testing the Repository of Persona.
+     */
+    @Test
+    public void testRepositoryPersona() {
+
+        // The database to use (in RAM memory)
+        String databaseUrl = "jdbc:h2:mem:fivet_db";
+
+        try (ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl)) {
+
+            // Create the table in the backend
+            // TODO: Include this call in the repository?
+            TableUtils.createTableIfNotExists(connectionSource, Persona.class);
+
+            // Test: connection null
+            Assertions.assertThrows(RuntimeException.class, () ->
+                    new RepositoryOrmLite<>(null, Persona.class)
+            );
+
+            // Test: Class null
+            Assertions.assertThrows(RuntimeException.class, () ->
+                    new RepositoryOrmLite<>(connectionSource, null)
+            );
+
+            // The Persona repository.
+            Repository<Persona, Long> theRepo = new RepositoryOrmLite<>(connectionSource, Persona.class);
+
+            // Get the list of all. Size == 0.
+            {
+                List<Persona> personas = theRepo.findAll();
+                // The size must be zero.
+                Assertions.assertEquals(0, personas.size(), "Size != 0 !!");
+            }
+
+            // Test the insert v1: ok.
+            {
+                // New Persona
+                Persona persona = new Persona("Andrea", "Contreras", "152532873", "acontreras@ucn.cl");
+                if (!theRepo.create(persona)) {
+                    Assertions.fail("Can't insert !");
+                }
+                Assertions.assertNotNull(persona.getId(), "Id was null");
+            }
+
+            // Test the insert v2: error.
+            {
+                // New Persona
+                Persona persona = new Persona("Andrea", "Contreras", "152532873", "acontreras@ucn.cl");
+                Assertions.assertThrows(RuntimeException.class, () -> theRepo.create(persona));
+            }
+
+            // Get the list of all. Size == 1.
+            {
+                List<Persona> personas = theRepo.findAll();
+                // The size must be one.
+                Assertions.assertEquals(1, personas.size(), "Size != 1 !!");
+            }
+
+            // Delete
+            {
+
+            }
+
+        } catch (SQLException | IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+    }
+
+
+    /**
      * Testing de ORMLite + H2 (database).
      */
     @Test
@@ -70,7 +141,7 @@ public final class StorageTest {
             Dao<Persona, Long> daoPersona = DaoManager.createDao(connectionSource, Persona.class);
 
             // New Persona
-            Persona persona = new Persona("Andrea", "Contreras", "152532873");
+            Persona persona = new Persona("Andrea", "Contreras", "152532873", "acontreras@ucn.cl");
 
             // Insert Persona into the database
             int tuples = daoPersona.create(persona);
@@ -95,7 +166,6 @@ public final class StorageTest {
         } catch (IOException e) {
             log.error("Error", e);
         }
-
 
     }
 
