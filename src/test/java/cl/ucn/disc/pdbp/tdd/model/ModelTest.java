@@ -73,6 +73,10 @@ public final class ModelTest {
         Assertions.assertEquals(apellido, persona.getApellido());
         Assertions.assertEquals(persona.getNombreApellido(), nombreApellido);
         Assertions.assertEquals(rutOk, persona.getRut());
+        Assertions.assertEquals(null, persona.getDireccion());
+        Assertions.assertEquals(null, persona.getTelefonoFijo());
+        Assertions.assertEquals(null, persona.getTelefonoMovil());
+        Assertions.assertEquals(email, persona.getEmail());
         Assertions.assertNotEquals(rutError, persona.getRut());
 
         // Testing nullity
@@ -95,6 +99,10 @@ public final class ModelTest {
         log.debug(".. rut ..");
         Assertions.assertThrows(RuntimeException.class, () -> new Persona(nombre, apellido, rutError, email));
         Assertions.assertThrows(RuntimeException.class, () -> new Persona(nombre, null, rutOk, email));
+
+        // Testing invalid email
+        Assertions.assertThrows(RuntimeException.class, () -> new Persona(nombre, apellido, rutOk, null));
+        Assertions.assertThrows(RuntimeException.class, () -> new Persona(nombre, apellido, rutOk, "null"));
 
         log.debug("Done.");
 
