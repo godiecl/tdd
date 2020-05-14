@@ -144,6 +144,7 @@ public final class StorageTest {
             // Create the table in the backend
             // TODO: Include this call in the repository?
             TableUtils.createTableIfNotExists(connectionSource, Ficha.class);
+            TableUtils.createTableIfNotExists(connectionSource, Persona.class);
 
             // The repository.
             Repository<Ficha, Long> theRepo = new RepositoryOrmLite<>(connectionSource, Ficha.class);
@@ -157,6 +158,9 @@ public final class StorageTest {
 
             // The Ficha to insert.
             {
+                Persona persona = new Persona("Diego", "Urrutia", "132204810", "durrutia@ucn.cl");
+                new RepositoryOrmLite<>(connectionSource, Persona.class).create(persona);
+
                 Ficha ficha = new Ficha(
                         123,
                         "Firulais",
@@ -165,7 +169,8 @@ public final class StorageTest {
                         "Rottweiler",
                         Sexo.MACHO,
                         "Negro con amarillo",
-                        Tipo.INTERNO
+                        Tipo.INTERNO,
+                        persona
                 );
 
                 if (!theRepo.create(ficha)) {
@@ -179,6 +184,9 @@ public final class StorageTest {
                 Ficha ficha = theRepo.findById(1L);
                 Assertions.assertNotNull(ficha, "404 Not found!");
                 log.debug("Ficha: {}.", Entity.toString(ficha));
+                log.debug("Duenio: {}.", Entity.toString(ficha.getDuenio()));
+                Assertions.assertNotNull(ficha.getDuenio(), "Duenio was null");
+                Assertions.assertNotNull(ficha.getDuenio().getRut(), "Rut was null");
             }
 
         } catch (SQLException | IOException exception) {

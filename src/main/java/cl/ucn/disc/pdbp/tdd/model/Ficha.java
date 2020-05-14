@@ -93,6 +93,12 @@ public final class Ficha {
     private Tipo tipo;
 
     /**
+     * The Owner.
+     */
+    @DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
+    private Persona duenio;
+
+    /**
      * Empty constructor.
      */
     Ficha() {
@@ -110,6 +116,7 @@ public final class Ficha {
      * @param sexo            de la mascota.
      * @param color           de la mascota.
      * @param tipo            de la mascota.
+     * @param duenio          de la mascota.
      */
     public Ficha(Integer numero,
                  String nombrePaciente,
@@ -118,7 +125,8 @@ public final class Ficha {
                  String raza,
                  Sexo sexo,
                  String color,
-                 Tipo tipo) {
+                 Tipo tipo,
+                 Persona duenio) {
         // TODO: add validations !!
         this.numero = numero;
         this.nombrePaciente = nombrePaciente;
@@ -128,6 +136,7 @@ public final class Ficha {
         this.sexo = sexo;
         this.color = color;
         this.tipo = tipo;
+        this.duenio = duenio;
     }
 
     /**
@@ -191,5 +200,12 @@ public final class Ficha {
      */
     public Tipo getTipo() {
         return tipo;
+    }
+
+    /**
+     * @return the duenio.
+     */
+    public Persona getDuenio() {
+        return duenio;
     }
 }
