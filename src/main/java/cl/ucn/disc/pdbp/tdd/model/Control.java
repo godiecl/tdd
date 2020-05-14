@@ -24,6 +24,9 @@
 
 package cl.ucn.disc.pdbp.tdd.model;
 
+import cl.ucn.disc.pdbp.tdd.dao.ZonedDateTimeType;
+import com.j256.ormlite.field.DatabaseField;
+
 import java.time.ZonedDateTime;
 
 /**
@@ -34,46 +37,72 @@ import java.time.ZonedDateTime;
 public final class Control {
 
     /**
+     * The id: Primary Key (autoincrement).
+     */
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    /**
      * The fecha of Control.
      */
-    private final ZonedDateTime fecha;
+    @DatabaseField(persisterClass = ZonedDateTimeType.class)
+    private ZonedDateTime fecha;
 
     /**
      * The fecha of next Control.
      */
-    private final ZonedDateTime fechaProximoControl;
+    @DatabaseField(persisterClass = ZonedDateTimeType.class)
+    private ZonedDateTime fechaProximoControl;
 
     /**
      * The temperatura (Celsius).
      * Min: 20.
      * Max: 50.
      */
-    private final float temperatura;
+    @DatabaseField
+    private float temperatura;
 
     /**
      * The Peso (kg).
      * Min: 0.
      * Max: 200. // TODO: Verificar el valor maximo.
      */
-    private final float peso;
+    @DatabaseField
+    private float peso;
 
     /**
      * The altura (cm).
      * Min: 0
      * Max: 200 // TODO: Verificar la altura maxima de un paciente.
      */
-    private final float altura;
+    @DatabaseField
+    private float altura;
 
     /**
      * The Diagnostico
      */
-    private final String diagnostico;
+    @DatabaseField
+    private String diagnostico;
 
     /**
      * The Veterinario.
      * Nota: Enlace many to one con veterinario.
      */
-    private final Persona veterinario;
+    @DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
+    private Persona veterinario;
+
+    /**
+     * The Ficha-Control.
+     */
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Ficha ficha;
+
+    /**
+     * Empty constructor.
+     */
+    Control() {
+        // nothing here
+    }
 
     /**
      * The Constructor.
@@ -86,7 +115,14 @@ public final class Control {
      * @param diagnostico         to use.
      * @param veterinario         to use.
      */
-    public Control(ZonedDateTime fecha, ZonedDateTime fechaProximoControl, float temperatura, float peso, float altura, String diagnostico, Persona veterinario) {
+    public Control(ZonedDateTime fecha,
+                   ZonedDateTime fechaProximoControl,
+                   float temperatura,
+                   float peso,
+                   float altura,
+                   String diagnostico,
+                   Persona veterinario,
+                   Ficha ficha) {
         // TODO: Add the restrictions.
         this.fecha = fecha;
         this.fechaProximoControl = fechaProximoControl;
@@ -95,6 +131,14 @@ public final class Control {
         this.altura = altura;
         this.diagnostico = diagnostico;
         this.veterinario = veterinario;
+        this.ficha = ficha;
+    }
+
+    /**
+     * @return the id.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -145,4 +189,12 @@ public final class Control {
     public Persona getVeterinario() {
         return veterinario;
     }
+
+    /**
+     * @return the ficha.
+     */
+    public Ficha getFicha() {
+        return ficha;
+    }
+
 }

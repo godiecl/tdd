@@ -24,10 +24,7 @@
 
 package cl.ucn.disc.pdbp.tdd.dao;
 
-import cl.ucn.disc.pdbp.tdd.model.Ficha;
-import cl.ucn.disc.pdbp.tdd.model.Persona;
-import cl.ucn.disc.pdbp.tdd.model.Sexo;
-import cl.ucn.disc.pdbp.tdd.model.Tipo;
+import cl.ucn.disc.pdbp.tdd.model.*;
 import cl.ucn.disc.pdbp.utils.Entity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -145,6 +142,7 @@ public final class StorageTest {
             // TODO: Include this call in the repository?
             TableUtils.createTableIfNotExists(connectionSource, Ficha.class);
             TableUtils.createTableIfNotExists(connectionSource, Persona.class);
+            TableUtils.createTableIfNotExists(connectionSource, Control.class);
 
             // The repository.
             Repository<Ficha, Long> theRepo = new RepositoryOrmLite<>(connectionSource, Ficha.class);
@@ -177,16 +175,37 @@ public final class StorageTest {
                     Assertions.fail("Can't insert!");
                 }
                 Assertions.assertNotNull(ficha.getId(), "Id was null");
+
+                Control control = new Control(
+                        ZonedDateTime.now(),
+                        ZonedDateTime.now(),
+                        35.0f,
+                        5.5f,
+                        20.5f,
+                        "Todo normal",
+                        persona,
+                        ficha
+                );
+                new RepositoryOrmLite<>(connectionSource, Control.class).create(control);
+                log.debug("Control: {}.", Entity.toString(control));
+
             }
 
             // Get from repository
             {
                 Ficha ficha = theRepo.findById(1L);
                 Assertions.assertNotNull(ficha, "404 Not found!");
+
                 log.debug("Ficha: {}.", Entity.toString(ficha));
                 log.debug("Duenio: {}.", Entity.toString(ficha.getDuenio()));
                 Assertions.assertNotNull(ficha.getDuenio(), "Duenio was null");
                 Assertions.assertNotNull(ficha.getDuenio().getRut(), "Rut was null");
+
+                Assertions.assertEquals(1, ficha.getControles().size(), "Size != 1");
+                for (Control control : ficha.getControles()) {
+                    log.debug("Control: {}", Entity.toString(control));
+                }
+
             }
 
         } catch (SQLException | IOException exception) {
