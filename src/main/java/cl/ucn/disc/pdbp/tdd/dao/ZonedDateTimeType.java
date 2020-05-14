@@ -28,8 +28,6 @@ import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.BaseDataType;
 import com.j256.ormlite.support.DatabaseResults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.time.ZonedDateTime;
@@ -45,12 +43,7 @@ import java.time.temporal.TemporalAccessor;
 public final class ZonedDateTimeType extends BaseDataType {
 
     /**
-     * The logger.
-     */
-    private static final Logger log = LoggerFactory.getLogger(ZonedDateTimeType.class);
-
-    /**
-     * The formatter.
+     * The formatter (2011-12-03T10:15:30+01:00)
      */
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -70,6 +63,7 @@ public final class ZonedDateTimeType extends BaseDataType {
      * The Constructor.
      */
     private ZonedDateTimeType() {
+        // ZonedDateTime <-> String
         super(SqlType.STRING, new Class<?>[]{ZonedDateTime.class});
     }
 
@@ -79,6 +73,7 @@ public final class ZonedDateTimeType extends BaseDataType {
     @Override
     public int getDefaultWidth() {
         // https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/format/DateTimeFormatter.html
+        // Size of string: VARCHAR(64)
         return 64;
     }
 
@@ -87,6 +82,13 @@ public final class ZonedDateTimeType extends BaseDataType {
      */
     @Override
     public Object sqlArgToJava(FieldType fieldType, Object sqlArg, int columnPos) {
+
+        // Nullity test
+        if (sqlArg == null) {
+            return null;
+        }
+
+        // String to ZonedDateTime
         return ZonedDateTime.parse((CharSequence) sqlArg, FORMATTER);
     }
 
@@ -104,10 +106,12 @@ public final class ZonedDateTimeType extends BaseDataType {
     @Override
     public Object javaToSqlArg(FieldType fieldType, Object javaObject) {
 
+        // Nullity test
         if (javaObject == null) {
             return null;
         }
 
+        // ZonedDateTime to String
         return FORMATTER.format((TemporalAccessor) javaObject);
     }
 
