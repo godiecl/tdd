@@ -179,20 +179,62 @@ public final class StorageTest {
                 }
                 Assertions.assertNotNull(ficha.getId(), "Id was null");
 
+                // Testing the Ficha
+                {
+                    Ficha fichaDb = repoFicha.findById(1L);
+                    Assertions.assertNotNull(fichaDb, "Ficha was null");
+                    Assertions.assertEquals(ficha.getColor(), fichaDb.getColor());
+                    Assertions.assertEquals(ficha.getEspecie(), fichaDb.getEspecie());
+                    Assertions.assertEquals(ficha.getNombrePaciente(), fichaDb.getNombrePaciente());
+                    Assertions.assertEquals(ficha.getFechaNacimiento().toInstant(), fichaDb.getFechaNacimiento().toInstant());
+                    Assertions.assertEquals(ficha.getNumero(), fichaDb.getNumero());
+                    Assertions.assertEquals(ficha.getRaza(), fichaDb.getRaza());
+                    Assertions.assertEquals(ficha.getSexo(), fichaDb.getSexo());
+                    Assertions.assertEquals(ficha.getTipo(), fichaDb.getTipo());
+                }
+
                 // Create the Control ..
-                Control control = new Control(
-                        ZonedDateTime.now(),
-                        ZonedDateTime.now(),
-                        35.0f,
-                        5.5f,
-                        20.5f,
-                        "Todo normal",
-                        persona,
-                        ficha
-                );
-                // .. and insert into the repo.
-                new RepositoryOrmLite<>(connectionSource, Control.class).create(control);
-                log.debug("Control: {}.", Entity.toString(control));
+                {
+                    Control control = new Control(
+                            ZonedDateTime.now(),
+                            ZonedDateTime.now(),
+                            35.0f,
+                            5.5f,
+                            20.5f,
+                            "Todo normal",
+                            persona,
+                            ficha
+                    );
+
+                    // The Repo of Control.
+                    Repository<Control, Long> repoControl = new RepositoryOrmLite<>(connectionSource, Control.class);
+
+                    // .. and insert into the repo.
+                    if (!repoControl.create(control)) {
+                        Assertions.fail("Can't create Control");
+                    }
+                    log.debug("Control: {}.", Entity.toString(control));
+
+                    Control controlDb = repoControl.findById(1L);
+                    Assertions.assertNotNull(controlDb, "Control was null");
+                    Assertions.assertEquals(control.getId(), controlDb.getId(), "Id !=");
+
+                    Assertions.assertNotNull(controlDb.getFecha(), "Fecha was null");
+                    Assertions.assertNotNull(controlDb.getFechaProximoControl(), "FechaProximoControl was null");
+
+                    Assertions.assertEquals(control.getFecha().toInstant(),
+                            controlDb.getFecha().toInstant(), "Fecha !=");
+                    Assertions.assertEquals(control.getFechaProximoControl().toInstant(),
+                            controlDb.getFechaProximoControl().toInstant(), "FechaProximoControl !=");
+
+                    Assertions.assertEquals(control.getTemperatura(), controlDb.getTemperatura(), "Temperatura !=");
+                    Assertions.assertEquals(control.getPeso(), controlDb.getPeso(), "Peso !=");
+                    Assertions.assertEquals(control.getAltura(), controlDb.getAltura(), "Altura !=");
+                    Assertions.assertEquals(control.getDiagnostico(), controlDb.getDiagnostico(), "Diagnostico !=");
+
+                    Assertions.assertNotNull(controlDb.getVeterinario(), "Veterinario null");
+                    Assertions.assertNotNull(controlDb.getFicha(), "Ficha null");
+                }
 
             }
 
