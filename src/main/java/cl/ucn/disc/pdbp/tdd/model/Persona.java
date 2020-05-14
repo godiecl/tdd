@@ -80,7 +80,8 @@ public final class Persona {
     private Integer telefonoFijo;
 
     /**
-     * The telefono movil
+     * The telefono movil.
+     * FIXME: add the not null to telefonoMovil.
      */
     @DatabaseField
     private Integer telefonoMovil;
@@ -100,6 +101,7 @@ public final class Persona {
 
     /**
      * The Constructor.
+     * FIXME: remove this contructor -> update the tests.
      */
     public Persona(String nombre, String apellido, String rut, String email) {
         this(rut, nombre, apellido, null, null, null, email);
