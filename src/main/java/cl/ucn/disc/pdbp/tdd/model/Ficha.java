@@ -24,6 +24,7 @@
 
 package cl.ucn.disc.pdbp.tdd.model;
 
+import cl.ucn.disc.pdbp.tdd.dao.ZonedDateTimeType;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -31,6 +32,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -69,7 +71,7 @@ public final class Ficha {
     /**
      * Fecha de nacimiento
      */
-    @DatabaseField
+    @DatabaseField(persisterClass = ZonedDateTimeType.class)
     private ZonedDateTime fechaNacimiento;
 
     /**
@@ -223,7 +225,7 @@ public final class Ficha {
      * @return the List of Controles.
      */
     public List<Control> getControles() {
-        return new ArrayList<>(controles);
+        return Collections.unmodifiableList(new ArrayList<>(controles));
     }
 
 }
