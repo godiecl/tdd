@@ -52,6 +52,12 @@ public class RepositoryOrmLite<T, K> implements Repository<T, K> {
      * @param theClazz         to use as source.
      */
     public RepositoryOrmLite(ConnectionSource connectionSource, Class<T> theClazz) {
+
+        // Nullity test
+        if (theClazz == null) {
+            throw new IllegalArgumentException("Can't create Repository without the class");
+        }
+
         try {
             theDao = DaoManager.createDao(connectionSource, theClazz);
         } catch (SQLException throwables) {
