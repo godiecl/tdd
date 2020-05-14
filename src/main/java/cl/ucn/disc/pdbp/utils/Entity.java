@@ -24,8 +24,8 @@
 
 package cl.ucn.disc.pdbp.utils;
 
+import org.apache.commons.lang3.builder.MultilineRecursiveToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * The utils of Entity.
@@ -42,7 +42,7 @@ public final class Entity {
      * @return the object in string format.
      */
     public static <T> String toString(final T t) {
-        return ReflectionToStringBuilder.toString(t, ToStringStyle.MULTI_LINE_STYLE);
+        return ReflectionToStringBuilder.toString(t, new MultilineRecursiveToStringStyle());
     }
 
 }
