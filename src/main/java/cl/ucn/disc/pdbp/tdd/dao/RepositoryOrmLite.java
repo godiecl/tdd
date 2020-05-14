@@ -83,6 +83,12 @@ public class RepositoryOrmLite<T, K> implements Repository<T, K> {
      */
     @Override
     public T findById(K id) {
+
+        // Nullity test
+        if (id == null) {
+            throw new IllegalArgumentException("Can't find nulls");
+        }
+
         try {
             return theDao.queryForId(id);
         } catch (SQLException throwables) {
@@ -96,6 +102,12 @@ public class RepositoryOrmLite<T, K> implements Repository<T, K> {
      */
     @Override
     public boolean create(T t) {
+
+        // Nullity
+        if (t == null) {
+            throw new IllegalArgumentException("Can't create a null");
+        }
+
         try {
             return theDao.create(t) == 1;
         } catch (SQLException throwables) {
@@ -109,6 +121,12 @@ public class RepositoryOrmLite<T, K> implements Repository<T, K> {
      */
     @Override
     public boolean update(T t) {
+
+        // Nullity
+        if (t == null) {
+            throw new IllegalArgumentException("Can't create a null");
+        }
+
         try {
             return theDao.update(t) == 1;
         } catch (SQLException throwables) {
@@ -122,6 +140,12 @@ public class RepositoryOrmLite<T, K> implements Repository<T, K> {
      */
     @Override
     public boolean delete(K id) {
+
+        // Nullity
+        if (id == null) {
+            throw new IllegalArgumentException("Can't create a null");
+        }
+
         try {
             return theDao.deleteById(id) == 1;
         } catch (SQLException throwables) {
