@@ -82,7 +82,7 @@ public final class Persona {
     /**
      * The telefono movil
      */
-    @DatabaseField(canBeNull = false)
+    @DatabaseField
     private Integer telefonoMovil;
 
     /**

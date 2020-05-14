@@ -118,7 +118,10 @@ public final class StorageTest {
 
             // Delete
             {
-
+                if (!theRepo.delete(1L)) {
+                    Assertions.fail("Can't delete !");
+                }
+                Assertions.assertEquals(0, theRepo.findAll().size(), "Size != 0");
             }
 
         } catch (SQLException | IOException exception) {
