@@ -37,6 +37,7 @@ import java.util.List;
  * @param <T> the type of model domain to use.
  * @param <K> the type of id.
  */
+@SuppressWarnings("DesignForExtension")
 public class RepositoryOrmLite<T, K> implements Repository<T, K> {
 
     /**
