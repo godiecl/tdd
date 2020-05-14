@@ -51,49 +51,49 @@ public final class Ficha {
     private Long id;
 
     /**
-     * Numero de ficha
+     * Numero de ficha.
      */
     @DatabaseField
     private Integer numero;
 
     /**
-     * Nombre del paciente
+     * Nombre del paciente.
      */
     @DatabaseField(canBeNull = false)
     private String nombrePaciente;
 
     /**
-     * Especie: ej. canino
+     * Especie: ej. canino.
      */
     @DatabaseField(canBeNull = false)
     private String especie;
 
     /**
-     * Fecha de nacimiento
+     * Fecha de nacimiento.
      */
     @DatabaseField(persisterClass = ZonedDateTimeType.class)
     private ZonedDateTime fechaNacimiento;
 
     /**
-     * Raza
+     * Raza.
      */
     @DatabaseField
     private String raza;
 
     /**
-     * Sexo
+     * Sexo.
      */
     @DatabaseField(canBeNull = false)
     private Sexo sexo;
 
     /**
-     * Color: rojo cobrizo
+     * Color: rojo cobrizo.
      */
     @DatabaseField
     private String color;
 
     /**
-     * Tipo: interno/externo
+     * Tipo: interno/externo.
      */
     @DatabaseField(canBeNull = false)
     private Tipo tipo;
