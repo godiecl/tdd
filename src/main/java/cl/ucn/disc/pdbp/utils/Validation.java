@@ -58,6 +58,10 @@ public final class Validation {
      * @return true is email is valid.
      */
     public static boolean isEmailValid(String email) {
+        // Nullity test
+        if (email == null) {
+            return false;
+        }
         return PATTERN.matcher(email).find();
     }
 

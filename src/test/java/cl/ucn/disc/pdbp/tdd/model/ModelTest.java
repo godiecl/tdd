@@ -112,6 +112,8 @@ public final class ModelTest {
         Assertions.assertTrue(Validation.isEmailValid("durru_tia@ucn.cl"));
         Assertions.assertTrue(Validation.isEmailValid("123@ucn.cl"));
 
+        Assertions.assertFalse(Validation.isEmailValid(null));
+        Assertions.assertFalse(Validation.isEmailValid("19"));
         Assertions.assertFalse(Validation.isEmailValid("durrutia@u cn.cl"));
         Assertions.assertFalse(Validation.isEmailValid("@ucn.cl"));
         Assertions.assertFalse(Validation.isEmailValid("durrutia"));
