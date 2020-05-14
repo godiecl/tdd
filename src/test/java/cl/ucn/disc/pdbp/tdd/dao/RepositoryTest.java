@@ -76,20 +76,30 @@ public class RepositoryTest {
 
             // Insert the model
             {
+                log.debug("Testing create with null ..");
+                Assertions.assertThrows(IllegalArgumentException.class,
+                        () -> theRepo.findById(null), "Create with null");
+
+                log.debug("Testing findById with null ..");
+                Assertions.assertThrows(IllegalArgumentException.class,
+                        () -> theRepo.findById(null), "FindById with null");
+
                 TheModel theModel = new TheModel(
                         ZonedDateTime.now(),
                         "The Name"
                 );
 
+                log.debug("Testing create Model ..");
                 if (!theRepo.create(theModel)) {
                     Assertions.fail("Can't insert the model");
                 }
 
-                log.debug("Model id: {}.", theModel.getId());
+                log.debug("Model created with id: {}.", theModel.getId());
             }
 
             // Request the model
             {
+                log.debug("Testing findAll() ..");
                 List<TheModel> list = theRepo.findAll();
                 Assertions.assertNotNull(list, "List was null");
                 Assertions.assertEquals(1, list.size(), "List size != 0");
@@ -97,10 +107,12 @@ public class RepositoryTest {
 
             // Update
             {
+                log.debug("Testing with id ..");
                 TheModel theModel = theRepo.findById(2L);
                 Assertions.assertNotNull(theModel, "Model was null");
                 theModel.setTheName("The New Name");
 
+                log.debug("Testing the update ..");
                 if (!theRepo.update(theModel)) {
                     Assertions.fail("Can't update the model");
                 }
@@ -108,21 +120,32 @@ public class RepositoryTest {
 
             // Update-Delete
             {
+                Assertions.assertThrows(IllegalArgumentException.class,
+                        () -> theRepo.update(null), "Update with null");
+
+                Assertions.assertThrows(IllegalArgumentException.class,
+                        () -> theRepo.delete(null), "Delete with null");
+
+                log.debug("Finding with id 2 ..");
                 TheModel theModel = theRepo.findById(2L);
                 Assertions.assertNotNull(theModel, "Model was null");
                 Assertions.assertEquals("The New Name", theModel.getTheName(), "The Name was !=");
 
+                log.debug("Deleting id 1 ..");
                 if (theRepo.delete(1L)) {
                     Assertions.fail("Delete a non-existent model");
                 }
 
+                log.debug("Deleting id 2 ..");
                 if (!theRepo.delete(2L)) {
                     Assertions.fail("Can't delete a valid model");
                 }
-
+                log.debug("Finding with id 2 ..");
                 Assertions.assertNull(theRepo.findById(2L), "TheModel removed exist in the database");
+
+                log.debug("Find all ..");
                 List<TheModel> list = theRepo.findAll();
-                Assertions.assertEquals(0, list.size(),  "Size != 0");
+                Assertions.assertEquals(0, list.size(), "Size != 0");
             }
 
         } catch (SQLException | IOException exception) {
