@@ -30,17 +30,30 @@ import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * The Persona class.
+ * <p>
+ * - El nombre no puede ser null.
+ * - El nombre debe tener al menos 2 letras.
+ * - El apellido no puede ser null.
+ * - El apellido debe tener al menos 3 letras.
+ * - El rut no puede ser null.
+ * - El rut debe ser valido.
  *
  * @author Diego Urrutia-Astorga.
  */
-@DatabaseTable(tableName = "personas")
+@DatabaseTable(tableName = "persona")
 public final class Persona {
 
     /**
-     * The id.
+     * The id: Primary Key (autoincrement).
      */
     @DatabaseField(generatedId = true)
     private Long id;
+
+    /**
+     * The Rut.
+     */
+    @DatabaseField(canBeNull = false, unique = true, index = true)
+    private String rut;
 
     /**
      * The Nombre.
@@ -55,32 +68,53 @@ public final class Persona {
     private String apellido;
 
     /**
-     * The Rut.
+     * The Direccion.
      */
-    @DatabaseField(canBeNull = false, index = true)
-    private String rut;
+    @DatabaseField
+    private String direccion;
 
     /**
-     * Empty contructor.
+     * The telefono fijo.
+     */
+    @DatabaseField
+    private Integer telefonoFijo;
+
+    /**
+     * The telefono movil
+     */
+    @DatabaseField(canBeNull = false)
+    private Integer telefonoMovil;
+
+    /**
+     * The Email
+     */
+    @DatabaseField(canBeNull = false, unique = true)
+    private String email;
+
+    /**
+     * Empty contructor: Default visibility + empty body.
      */
     Persona() {
         // nothing here.
     }
 
     /**
-     * Constructor de una persona.
-     * - El nombre no puede ser null.
-     * - El nombre debe tener al menos 2 letras.
-     * - El apellido no puede ser null.
-     * - El apellido debe tener al menos 3 letras.
-     * - El rut no puede ser null.
-     * - El rut debe ser valido.
-     *
-     * @param nombre   a utilizar.
-     * @param apellido a usar.
-     * @param rut      valido.
+     * The Constructor.
      */
-    public Persona(String nombre, String apellido, String rut) {
+    public Persona(String nombre, String apellido, String rut, String email) {
+        this(rut, nombre, apellido, null, null, null, email);
+    }
+
+    /**
+     * The Constructor.
+     */
+    public Persona(String rut,
+                   String nombre,
+                   String apellido,
+                   String direccion,
+                   Integer telefonoFijo,
+                   Integer telefonoMovil,
+                   String email) {
 
         // Not null allowed!
         if (nombre == null || apellido == null || rut == null) {
@@ -104,6 +138,11 @@ public final class Persona {
             throw new RuntimeException("RUT should be valid");
         }
         this.rut = rut;
+
+        if (!Validation.isEmailValid(email)) {
+            throw new RuntimeException("Email should be valid");
+        }
+        this.email = email;
 
     }
 
@@ -133,6 +172,34 @@ public final class Persona {
      */
     public String getRut() {
         return rut;
+    }
+
+    /**
+     * @return the direccion.
+     */
+    public String getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * @return the telefonoFijo.
+     */
+    public Integer getTelefonoFijo() {
+        return telefonoFijo;
+    }
+
+    /**
+     * @return the telefonoMovil.
+     */
+    public Integer getTelefonoMovil() {
+        return telefonoMovil;
+    }
+
+    /**
+     * @return the email.
+     */
+    public String getEmail() {
+        return email;
     }
 
     /**
