@@ -39,6 +39,11 @@ import java.sql.SQLException;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * The Test of Repository.
+ *
+ * @author Diego Urrutia-Astorga.
+ */
 public class RepositoryTest {
 
     /**
