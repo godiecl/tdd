@@ -85,6 +85,7 @@ public final class ContratosImpl implements Contratos {
         try {
 
             // The connection
+            log.debug("Creating the Connection ..");
             connectionSource = new JdbcConnectionSource(databaseUrl);
 
             // Create the table
@@ -131,60 +132,51 @@ public final class ContratosImpl implements Contratos {
 
         try {
 
-            // Find by ficha number
+            // If query is numeric
             if (StringUtils.isNumeric(query)) {
 
-                // Search by numero
+                // 1. Find Fichas by numero
                 log.debug("Searching with numero ..");
-                List<Ficha> fichasNumero = repoFicha.findAll("numero", query);
-                if (!fichasNumero.isEmpty()) {
-                    fichas.addAll(fichasNumero);
-                }
+                fichas.addAll(this.repoFicha.findAll("numero", query));
 
-                // Search by rut with foreign key
+                // 2. Find by partial rut with foreign key
                 // https://ormlite.com/javadoc/ormlite-core/doc-files/ormlite_3.html#Join-Queries
                 log.debug("Searching with rut ..");
                 QueryBuilder<Persona, Long> personaQuery = repoPersona.getQuery();
+
                 personaQuery
                         .where()
                         .like("rut", "%" + query + "%");
 
-                List<Ficha> fichasRut = repoFicha
+                fichas.addAll(this.repoFicha
                         .getQuery()
                         .join(personaQuery)
-                        .query();
+                        .query());
 
-                if (!fichasRut.isEmpty()) {
-                    fichas.addAll(fichasRut);
-                }
             }
 
-            // Search by nombrePaciente with foreign key
+            // 3. Find by partial nombrePaciente with foreign key
             log.debug("Searching with nombre paciente ..");
-            List<Ficha> fichaNombre = repoFicha
+            fichas.addAll(this.repoFicha
                     .getQuery()
                     .where()
                     .like("nombrePaciente", "%" + query + "%")
-                    .query();
+                    .query()
+            );
 
-            if (!fichaNombre.isEmpty()) {
-                fichas.addAll(fichaNombre);
-            }
-
+            // 4. Find by partial nombre duenio.
             log.debug("Searching with nombre duenio ..");
             QueryBuilder<Persona, Long> personaQuery = repoPersona.getQuery();
             personaQuery
                     .where()
                     .like("nombre", "%" + query + "%");
 
-            List<Ficha> fichasNombre = repoFicha
+            fichas.addAll(repoFicha
                     .getQuery()
                     .join(personaQuery)
-                    .query();
+                    .query()
+            );
 
-            if (!fichasNombre.isEmpty()) {
-                fichas.addAll(fichasNombre);
-            }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
