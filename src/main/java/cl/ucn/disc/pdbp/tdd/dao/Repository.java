@@ -24,6 +24,8 @@
 
 package cl.ucn.disc.pdbp.tdd.dao;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.util.List;
 
 /**
@@ -40,10 +42,22 @@ public interface Repository<T, K> {
     List<T> findAll();
 
     /**
+     * @param key   to search.
+     * @param value to search.
+     * @return the List of T filtered by key.
+     */
+    List<T> findAll(String key, Object value);
+
+    /**
      * @param id to search.
      * @return the T with id.
      */
     T findById(K id);
+
+    /**
+     * @return the {@link QueryBuilder}.
+     */
+    QueryBuilder<T, K> getQuery();
 
     /**
      * @param t to save.
