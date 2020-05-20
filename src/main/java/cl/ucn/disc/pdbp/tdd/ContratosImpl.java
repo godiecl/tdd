@@ -39,7 +39,10 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Concrete implementation of {@link Contratos}.
@@ -181,7 +184,13 @@ public final class ContratosImpl implements Contratos {
             throw new RuntimeException(ex);
         }
 
-        return fichas;
+        // Remove duplicated (by id)
+        return new ArrayList<>(
+                fichas.stream().collect(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Ficha::getId)))
+                )
+        );
+
 
     }
 
