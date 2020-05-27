@@ -34,6 +34,9 @@
 /.idea/jarRepositories.xml
 /.idea/compiler.xml
 
+# The databases
+/**/*.db
+
 # Trashy-trashy
 .DS_Store
 /build
