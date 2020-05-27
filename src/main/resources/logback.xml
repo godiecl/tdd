@@ -34,6 +34,7 @@
 
     <logger name="cl.ucn.disc" level="TRACE"/>
     <logger name="com.j256.ormlite.stmt.StatementExecutor" level="DEBUG"/>
+    <logger name="com.j256.ormlite.stmt.mapped.BaseMappedStatement" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="Console"/>
