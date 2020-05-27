@@ -24,15 +24,19 @@
 
 package cl.ucn.disc.pdbp.tdd;
 
+import cl.ucn.disc.pdbp.tdd.model.Ficha;
+import cl.ucn.disc.pdbp.tdd.model.Persona;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
+import io.javalin.http.NotFoundResponse;
 import io.javalin.plugin.json.JavalinJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * The Main Application.
@@ -60,8 +64,36 @@ public final class Application {
      */
     public static void main(String[] args) {
 
+        // The Contratos
+        log.debug("Building Contratos ..");
+        // Contratos contratos = new ContratosImpl("jdbc:h2:mem:");
+        // Contratos contratos = new ContratosImpl("jdbc:sqlite::memory:");
+        Contratos contratos = new ContratosImpl("jdbc:sqlite:fivet.db");
+
+        // Populate the db
+        log.debug("Populating the Database ..");
+        {
+            Persona persona = new Persona(
+                    "130144918",
+                    "Diego",
+                    "Urrutia-Astorga",
+                    "Angamos #0610",
+                    null,
+                    56983920265L,
+                    "durrutia@ucn.cl"
+            );
+
+            try {
+                contratos.registrarPersona(persona);
+            } catch (RuntimeException ex) {
+                log.warn("Can't insert persona", ex);
+            }
+        }
+
         // Gson configuration
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
         JavalinJson.setFromJsonMapper(gson::fromJson);
         JavalinJson.setToJsonMapper(gson::toJson);
 
@@ -73,8 +105,10 @@ public final class Application {
             config.enableDevLogging();
 
             // Measure the time
-            config.requestLogger(((ctx, executionTimeMs) ->
-                    log.info("Served {} in {} ms.", ctx.fullUrl(), executionTimeMs)));
+            config.requestLogger(((ctx, executionTimeMs) -> {
+                log.info("Served {} in {} ms.", ctx.fullUrl(), executionTimeMs);
+                ctx.header("Server-Timing", "total;dur=" + executionTimeMs);
+            }));
 
             // Enable routes helper
             config.registerPlugin(new RouteOverviewPlugin("/routes"));
@@ -96,6 +130,38 @@ public final class Application {
 
             // Show the date.
             ctx.result("The Date: " + ZonedDateTime.now());
+
+        });
+
+        // Get the fichas
+        javalin.get("/fichas/", ctx -> {
+
+            List<Ficha> fichas = contratos.getAllFichas();
+            ctx.json(fichas);
+
+        });
+
+        // Get the fichas
+        javalin.get("/fichas/find/:query", ctx -> {
+            String query = ctx.pathParam("query");
+            log.debug("Query: <{}>", query);
+
+            List<Ficha> fichas = contratos.buscarFicha(query);
+            ctx.json(fichas);
+
+        });
+
+        // Get the fichas
+        javalin.get("/personas/rut/:rut", ctx -> {
+            String rut = ctx.pathParam("rut");
+            log.debug("RUT: <{}>", rut);
+
+            Persona persona = contratos.findByRut(rut);
+            if (persona == null) {
+                throw new NotFoundResponse("Persona Not Found");
+            } else {
+                ctx.json(persona);
+            }
 
         });
 
