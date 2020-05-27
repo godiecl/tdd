@@ -90,6 +90,7 @@ dependencies {
 
     // Database driver
     implementation 'com.h2database:h2:1.4.200'
+    implementation 'org.xerial:sqlite-jdbc:3.31.1'
 
     // ToString provider.
     implementation 'org.apache.commons:commons-lang3:3.10'
