@@ -77,14 +77,14 @@ public final class Persona {
      * The telefono fijo.
      */
     @DatabaseField
-    private Integer telefonoFijo;
+    private Long telefonoFijo;
 
     /**
      * The telefono movil.
      * FIXME: add the not null to telefonoMovil.
      */
     @DatabaseField
-    private Integer telefonoMovil;
+    private Long telefonoMovil;
 
     /**
      * The Email
@@ -114,14 +114,20 @@ public final class Persona {
                    String nombre,
                    String apellido,
                    String direccion,
-                   Integer telefonoFijo,
-                   Integer telefonoMovil,
+                   Long telefonoFijo,
+                   Long telefonoMovil,
                    String email) {
 
         // Not null allowed!
         if (nombre == null || apellido == null || rut == null) {
             throw new NullPointerException("Nombre, apellido and rut cannot be null");
         }
+
+        // RUT valid.
+        if (!Validation.isRutValid(rut)) {
+            throw new RuntimeException("RUT should be valid");
+        }
+        this.rut = rut;
 
         // Size of nombre
         if (nombre.length() < 2) {
@@ -135,11 +141,10 @@ public final class Persona {
         }
         this.apellido = apellido;
 
-        // RUT valid.
-        if (!Validation.isRutValid(rut)) {
-            throw new RuntimeException("RUT should be valid");
-        }
-        this.rut = rut;
+        // TODO: Add validations
+        this.direccion = direccion;
+        this.telefonoFijo = telefonoFijo;
+        this.telefonoMovil = telefonoMovil;
 
         if (!Validation.isEmailValid(email)) {
             throw new RuntimeException("Email should be valid");
@@ -186,14 +191,14 @@ public final class Persona {
     /**
      * @return the telefonoFijo.
      */
-    public Integer getTelefonoFijo() {
+    public Long getTelefonoFijo() {
         return telefonoFijo;
     }
 
     /**
      * @return the telefonoMovil.
      */
-    public Integer getTelefonoMovil() {
+    public Long getTelefonoMovil() {
         return telefonoMovil;
     }
 
