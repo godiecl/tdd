@@ -34,7 +34,6 @@ import java.util.List;
  *
  * @author Diego Urrutia-Astorga.
  */
-@SuppressWarnings("InterfaceNeverImplemented")
 public interface Contratos {
 
     /**
@@ -60,6 +59,19 @@ public interface Contratos {
      * @return the {@link List} of {@link Ficha}.
      */
     List<Ficha> buscarFicha(String query);
+
+    /**
+     * Contrato: C04-Buscar Persona
+     *
+     * @param rut to search.
+     * @return the {@link Persona}.
+     */
+    Persona findByRut(String rut);
+
+    /**
+     * @return the {@link List} of {@link Ficha}.
+     */
+    List<Ficha> getAllFichas();
 
 }
 

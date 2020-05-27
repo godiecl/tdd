@@ -34,6 +34,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,7 +136,8 @@ public final class ContratosImpl implements Contratos {
      */
     @Override
     public Persona registrarPersona(Persona persona) {
-        throw new NotImplementedException("Not yet!");
+        this.repoPersona.create(persona);
+        return persona;
     }
 
     /**
@@ -205,7 +207,29 @@ public final class ContratosImpl implements Contratos {
                 )
         );
 
-
     }
 
+    /**
+     *
+     */
+    @Override
+    @Nullable
+    public Persona findByRut(String rut) {
+
+        List<Persona> personas = this.repoPersona.findAll("rut", rut);
+
+        if (!personas.isEmpty()) {
+            return personas.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public List<Ficha> getAllFichas() {
+        return this.repoFicha.findAll();
+    }
 }
