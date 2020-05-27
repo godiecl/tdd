@@ -28,7 +28,7 @@ import cl.ucn.disc.pdbp.tdd.dao.RepositoryOrmLite;
 import cl.ucn.disc.pdbp.tdd.model.Control;
 import cl.ucn.disc.pdbp.tdd.model.Ficha;
 import cl.ucn.disc.pdbp.tdd.model.Persona;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -58,11 +58,6 @@ public final class ContratosImpl implements Contratos {
     private static final Logger log = LoggerFactory.getLogger(ContratosImpl.class);
 
     /**
-     * The connection to the backend.
-     */
-    private final ConnectionSource connectionSource;
-
-    /**
      * The {@link cl.ucn.disc.pdbp.tdd.dao.RepositoryOrmLite} of Ficha.
      */
     private final RepositoryOrmLite<Ficha, Long> repoFicha;
@@ -89,7 +84,7 @@ public final class ContratosImpl implements Contratos {
 
             // The connection
             log.debug("Creating the Connection ..");
-            connectionSource = new JdbcConnectionSource(databaseUrl);
+            ConnectionSource connectionSource = buildConnectionSource(databaseUrl);
 
             // Create the table
             log.debug("Creating the Tables ..");
@@ -106,6 +101,25 @@ public final class ContratosImpl implements Contratos {
         } catch (SQLException throwables) {
             throw new RuntimeException(throwables);
         }
+    }
+
+    /**
+     * @param databaseUrl to use.
+     * @return the connection to the database.
+     * @throws SQLException if any problem.
+     */
+    private static ConnectionSource buildConnectionSource(String databaseUrl) throws SQLException {
+
+        // pooling !
+        JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(databaseUrl);
+
+        // only keep the connections open for 5 minutes
+        connectionSource.setMaxConnectionAgeMillis(5 * 60 * 1000);
+
+        // enable the testing of connections
+        connectionSource.setTestBeforeGet(true);
+
+        return connectionSource;
     }
 
     /**
