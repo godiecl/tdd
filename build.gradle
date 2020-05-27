@@ -94,4 +94,8 @@ dependencies {
     // ToString provider.
     implementation 'org.apache.commons:commons-lang3:3.10'
 
+    // HTTP Server
+    implementation 'io.javalin:javalin:3.8.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+
 }
